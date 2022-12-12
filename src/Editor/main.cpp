@@ -8,13 +8,15 @@
 
 static void glfw_error_callback(int error, const char* description)
 {
-    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+    minecart::logging::log_error << "[GLFW ERROR] " << error << description << std::endl;
 }
 
 int main(int, char**)
 {
     // Setup window
+    minecart::logging::log_debug << "e.g. Log a number: " << 3 << std::endl;
     minecart::testing::printSomething();
+
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
@@ -31,8 +33,10 @@ int main(int, char**)
     // Create window with graphics context
     const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Minecart Editor", NULL, NULL);
-    if (window == NULL)
+    if (window == NULL) {
+        minecart::logging::log_fatal << "[Init Error] Window is null" << std::endl;
         return 1;
+    }
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
 
@@ -40,7 +44,7 @@ int main(int, char**)
     bool err = gladLoadGL() == 0;
     if (err)
     {
-        fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+        minecart::logging::log_fatal << "[Init Error] Failed to initialize OpenGL loader!" << std::endl;
         return 1;
     }
 
@@ -70,7 +74,10 @@ int main(int, char**)
     GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
     glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
     // Always check that our framebuffer is ok
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) return false;
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        minecart::logging::log_fatal << "[Init Error] Failed to initialize OpenGL framebuffer!" << std::endl;
+        return false;
+    }
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();

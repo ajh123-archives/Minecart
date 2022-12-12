@@ -1,12 +1,13 @@
 #include <iostream>
 #include "things.h"
+#include "minecart.h"
 
 namespace minecart
 {
     namespace testing
     {
         void printSomething() {
-            std::cout << "Testing!: " << someString << std::endl;
+            minecart::logging::log_info << "[Testing] "<< someString  << std::endl;
         }
     }
 }
