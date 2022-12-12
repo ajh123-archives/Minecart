@@ -8,3 +8,18 @@ set(MINECART_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_library(minecart STATIC ${MINECART_SOURCES})
 target_include_directories(minecart PUBLIC ${MINECART_INCLUDE_DIR})
 target_include_directories(minecart PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+include_directories(
+    ${OPENGL_INCLUDE_DIR}
+    ${GLFW_INCLUDE_DIR}
+    ${GLAD_INCLUDE_DIR}
+    ${IMGUI_INCLUDE_DIR}
+    )
+    
+target_link_libraries(minecart
+    PRIVATE
+    ${OPENGL_LIBRARIES}
+    ${GLFW_LIBRARIES}
+    ${GLAD_LIBRARIES}
+    ${IMGUI_LIBRARIES}
+    )

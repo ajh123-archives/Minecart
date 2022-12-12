@@ -6,47 +6,11 @@
 #include <GLFW/glfw3.h>
 #include <minecart.h>
 
-static void glfw_error_callback(int error, const char* description)
-{
-    minecart::logging::log_error << "[GLFW ERROR] " << error << description << std::endl;
-}
-
 int main(int, char**)
 {
     // Setup window
-    minecart::logging::log_debug << "e.g. Log a number: " << 3 << std::endl;
-    minecart::testing::printSomething();
-
-    glfwSetErrorCallback(glfw_error_callback);
-    if (!glfwInit())
-        return 1;
-
-    // Decide GL+GLSL versions
-    // GL 3.2 + GLSL 150
-    const char* glsl_version = "#version 150";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
-
-
-    // Create window with graphics context
-    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Minecart Editor", NULL, NULL);
-    if (window == NULL) {
-        minecart::logging::log_fatal << "[Init Error] Window is null" << std::endl;
-        return 1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); // Enable vsync
-
-    // Initialize OpenGL loader
-    bool err = gladLoadGL() == 0;
-    if (err)
-    {
-        minecart::logging::log_fatal << "[Init Error] Failed to initialize OpenGL loader!" << std::endl;
-        return 1;
-    }
+    minecart::engine::EngineProperties props = minecart::engine::init("Editor");
+    if (props.window == NULL) {return 1;}
 
     // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
     GLuint FramebufferName = 0;
@@ -93,14 +57,14 @@ int main(int, char**)
     //ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer bindings
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
+    ImGui_ImplGlfw_InitForOpenGL(props.window, true);
+    ImGui_ImplOpenGL3_Init(minecart::engine::GLSL_VERSION);
 
     // Our state
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     // Main loop
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(props.window))
     {
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
@@ -121,12 +85,12 @@ int main(int, char**)
         // Scene rendering
         glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
         glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-        //call render
+        minecart::engine::render(props);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         // Rendering
         ImGui::Render();
         int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glfwGetFramebufferSize(props.window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -140,7 +104,7 @@ int main(int, char**)
             glfwMakeContextCurrent(backup_current_context);
         }
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(props.window);
     }
 
     // Cleanup
@@ -148,8 +112,7 @@ int main(int, char**)
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
+    minecart::engine::end(props);
 
     return 0;
 }
