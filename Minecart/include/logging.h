@@ -10,7 +10,7 @@ namespace minecart
         class Logger : public std::ostream {
         public:
             // level is a string which represents the log level e.g. "error"
-            Logger(const std::string& level);
+            Logger(const std::string& level, const std::string& color);
             ~Logger();
         };
 

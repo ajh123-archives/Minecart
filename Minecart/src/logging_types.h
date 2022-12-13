@@ -10,11 +10,12 @@ namespace minecart
         class LogBuf : public std::stringbuf {
         private:
             std::string m_level;
+            std::string m_color;
         public:
-            LogBuf(const std::string& level) : m_level(level) { }
+            LogBuf(const std::string& level, const std::string& color) : m_level(level), m_color(color) { }
             ~LogBuf() {  pubsync(); }
             int sync() {
-                std::cout << "[" << m_level << "] " << str();
+                std::cout << "[" << m_color << m_level << "\033[0m] " << str();
                 str("");
                 return std::cout?0:-1;
             }
