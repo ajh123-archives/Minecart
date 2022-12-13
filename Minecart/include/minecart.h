@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "logging.h"
+#include "shaders.h"
 
 namespace minecart
 {
@@ -13,13 +14,16 @@ namespace minecart
 
     namespace engine
     {
-        struct EngineProperties {
+        class EngineProperties {
+            public:
             GLFWwindow* window;
+            Shader* defaultShader;
+            EngineProperties(GLFWwindow* window, Shader* defaultShader);
         };
 
-        EngineProperties init(std::string title);
-        void render(EngineProperties properties);
-        void end(EngineProperties properties);
+        EngineProperties* init(std::string title);
+        void render(EngineProperties* properties);
+        void end(EngineProperties* properties);
 
         extern const char* GLSL_VERSION;
     }

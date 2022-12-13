@@ -23,3 +23,12 @@ target_link_libraries(minecart
     ${GLAD_LIBRARIES}
     ${IMGUI_LIBRARIES}
     )
+
+set (source "${CMAKE_SOURCE_DIR}/resources")
+set (destination "${CMAKE_BINARY_DIR}/resources")
+add_custom_command(
+    TARGET minecart POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${source} ${destination} 
+    DEPENDS ${destination}
+    COMMENT "symbolic link resources folder from ${source} => ${destination}"
+)
