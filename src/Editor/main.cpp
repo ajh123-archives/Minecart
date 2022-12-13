@@ -9,41 +9,8 @@
 int main(int, char**)
 {
     // Setup window
-    minecart::engine::EngineProperties* props = minecart::engine::init("Editor");
+    minecart::engine::EngineProperties* props = minecart::engine::init("Editor", 1024, 768);
     if (props->window == NULL) {return 1;}
-
-    // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
-    GLuint FramebufferName = 0;
-    glGenFramebuffers(1, &FramebufferName);
-    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-    // The texture we're going to render to
-    GLuint renderedTexture;
-    glGenTextures(1, &renderedTexture);
-    // "Bind" the newly created texture : all future texture functions will modify this texture
-    glBindTexture(GL_TEXTURE_2D, renderedTexture);
-    // Give an empty image to OpenGL ( the last "0" )
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1024, 768, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
-    // Poor filtering. Needed !
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // The depth buffer
-    GLuint depthrenderbuffer;
-    glGenRenderbuffers(1, &depthrenderbuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
-    // Set "renderedTexture" as our colour attachement #0
-    // glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);  
-    // Set the list of draw buffers.
-    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-    // Always check that our framebuffer is ok
-    glBindTexture(GL_TEXTURE_2D, 0);
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        minecart::logging::log_fatal << "[Init] Failed to initialize OpenGL framebuffer!" << std::endl;
-        return false;
-    }
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -82,13 +49,13 @@ int main(int, char**)
 
         ImGui::Begin("Game");
         ImVec2 wsize = ImGui::GetWindowSize();
-        ImGui::Image((void*)(intptr_t)renderedTexture, wsize, ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image((void*)(intptr_t)props->buffer->renderedTexture, wsize, ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
 
         // Scene rendering
         glUseProgram(props->defaultShader->getId());
-        glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-        glDrawBuffers(1, DrawBuffers);
+        glBindFramebuffer(GL_FRAMEBUFFER, props->buffer->FramebufferName);
+        glDrawBuffers(1, props->buffer->DrawBuffers);
         glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
         
         minecart::engine::render(props);

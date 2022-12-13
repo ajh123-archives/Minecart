@@ -33,12 +33,13 @@ namespace minecart
 
     namespace engine
     {
-        EngineProperties::EngineProperties(GLFWwindow* window, Shader* defaultShader) {
+        EngineProperties::EngineProperties(GLFWwindow* window, Shader* defaultShader, FrameBuffer* buffer) {
             this->window = window;
             this->defaultShader = defaultShader;
+            this->buffer = buffer;
         }
 
-        EngineProperties* init(std::string title) {
+        EngineProperties* init(std::string title, int frame_width, int frame_height) {
             minecart::logging::log_debug << "[Engine] Init" << std::endl;
             glfwSetErrorCallback(glfw_error_callback);
             if (!glfwInit())
@@ -88,7 +89,8 @@ namespace minecart
             shader->compile();
             return new EngineProperties(
                 window,
-                shader
+                shader,
+                new FrameBuffer(frame_width, frame_height)
             );
         }
 
