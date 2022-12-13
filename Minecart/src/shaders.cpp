@@ -15,7 +15,7 @@ namespace minecart
             this->m_fragment_file_path = fragment_file_path;
         }
         Shader::~Shader() {}
-        long long Shader::getId() {
+        int Shader::getId() {
             return this->m_program_id;
         }
         void Shader::compile() {
@@ -105,6 +105,15 @@ namespace minecart
             glDeleteShader(FragmentShaderID);
             this->m_program_id = ProgramID;
             minecart::logging::log_debug << "[Shaders] Program " << ProgramID << " linked" <<  std::endl;
+        }
+
+        void Shader::findLocation(std::string uniform_name) {
+            int id = glGetUniformLocation(this->getId(), uniform_name.c_str());
+            minecart::logging::log_debug << "[Shaders] \"" << uniform_name << "\" is located at " << id << " in program " << this->m_program_id << std::endl;
+            this->uniforms.emplace(uniform_name, id);
+        }
+        int Shader::get(std::string uniform_name) {
+            return this->uniforms.at(uniform_name.c_str());
         }
     }
 }

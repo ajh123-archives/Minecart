@@ -53,15 +53,7 @@ int main(int, char**)
         ImGui::End();
 
         // Scene rendering
-        glUseProgram(props->defaultShader->getId());
-        glBindFramebuffer(GL_FRAMEBUFFER, props->buffer->FramebufferName);
-        glDrawBuffers(1, props->buffer->DrawBuffers);
-        glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-        
         minecart::engine::render(props);
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glUseProgram(0);
         // Rendering
         ImGui::Render();
         int display_w, display_h;

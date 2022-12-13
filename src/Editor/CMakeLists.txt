@@ -5,6 +5,7 @@ include_directories(
     ${GLFW_INCLUDE_DIR}
     ${GLAD_INCLUDE_DIR}
     ${IMGUI_INCLUDE_DIR}
+    ${GLM_INCLUDE_DIR}
     minecart
     )
     
@@ -14,6 +15,7 @@ target_link_libraries(${PROJECT}
     ${GLFW_LIBRARIES}
     ${GLAD_LIBRARIES}
     ${IMGUI_LIBRARIES}
+    ${GLM_LIBRARIES}
     minecart
     )
 

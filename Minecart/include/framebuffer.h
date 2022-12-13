@@ -2,6 +2,7 @@
 #define MINECART_FRAMEBUFF_H
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/gtc/matrix_transform.hpp>
 #include "logging.h"
 
 namespace minecart
@@ -14,7 +15,14 @@ namespace minecart
             GLuint renderedTexture;
             GLuint depthrenderbuffer;
             GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+            int width;
+            int height;
+            glm::mat4 Projection;
             FrameBuffer(int width, int height) {
+                minecart::logging::log_debug << "[FrameBuffer] Creating projection matrix" << std::endl;
+                // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+                this->Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
+
                 minecart::logging::log_debug << "[FrameBuffer] Creating framebuffer " << width << "x" << height  << std::endl;
                 // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
                 this->FramebufferName = 0;
@@ -42,6 +50,8 @@ namespace minecart
                 glDrawBuffers(1, this->DrawBuffers); // "1" is the size of DrawBuffers
                 // Always check that our framebuffer is ok
                 glBindTexture(GL_TEXTURE_2D, 0);
+                this->width = width;
+                this->height = height;
                 if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
                     minecart::logging::log_fatal << "[FrameBuffer] Failed to initialize OpenGL framebuffer" << std::endl;
                     return;
