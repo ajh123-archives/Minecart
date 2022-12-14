@@ -1,3 +1,4 @@
 [Bb]uild*
 [Bb]undle*
-/.vscode
+/.vscode/*
+!/.vscode/settings.json

@@ -149,8 +149,8 @@ namespace minecart
             }
 
             minecart::engine::Shader* shader = new Shader(
-                "./resources/minecart/shaders/default_vertex.glsl", 
-                "./resources/minecart/shaders/default_fragment.glsl"
+                "./resources/minecart/assets/shaders/default_vertex.glsl", 
+                "./resources/minecart/assets/shaders/default_fragment.glsl"
             );
             shader->compile();
             FrameBuffer* buffer = new FrameBuffer(frame_width, frame_height);

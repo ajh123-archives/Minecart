@@ -6,17 +6,11 @@ A miminal game engine using OpenGL 3.0 and ImGUI.
 
 The project includes the following dependencies:
 
-* [imgui](https://github.com/ocornut/imgui) - Minimal GUI (on the docking branch!).
+* [Dear ImGUI](https://github.com/ocornut/imgui) - Minimal GUI (on the docking branch!).
 * [glfw](https://github.com/glfw/glfw) - Windowing and Input.
 * [glad](https://github.com/Dav1dde/glad) - OpenGL Function Loader.
 * [glm](https://github.com/g-truc/glm) - OpenGL Maths Library.
-
-## Using ImGui in a CMake Project 
-
-To use the ImGui in a CMake project one should copy the following files:
-
-* `3rdparty/imgui` - directory with ImGui headers copied from the original repository. This is a git submodule in this repository.
-* `cmake/imgui.cmake` - CMake module that defines variables `IMGUI_LIBRARIES` and `IMGUI_INCLUDE_DIR`.
+* [lodepng](https://github.com/lvandeve/lodepng) - PNG loading library.
 
 ## Environment Setup
 
