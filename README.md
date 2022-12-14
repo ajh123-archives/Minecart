@@ -1,15 +1,15 @@
-## Introduction
+## Minecart
 
-Minimal ImGUI demos are based on examples from the ImGui project.
-There are two examples for OpenGL 2.0 & 3.0.
+A miminal game engine using OpenGL 3.0 and ImGUI.
 
-![ImGui Example Screenshot](images/minimalimgui.png)
+![Example Screenshot](images/2022-12-13.png.png)
 
 The project includes the following dependencies:
 
-* [imgui](https://github.com/ocornut/imgui) - Minimal GUI.
+* [imgui](https://github.com/ocornut/imgui) - Minimal GUI (on the docking branch!).
 * [glfw](https://github.com/glfw/glfw) - Windowing and Input.
 * [glad](https://github.com/Dav1dde/glad) - OpenGL Function Loader.
+* [glm](https://github.com/g-truc/glm) - OpenGL Maths Library.
 
 ## Using ImGui in a CMake Project 
 
@@ -86,5 +86,11 @@ cd bundle
 ```
 
 ## TODO
-* Include ImGui module as git submodule (like glfw and glad).
-* Autogeneration of ImGui headers using [cimgui](https://github.com/cimgui/cimgui).
+* Game Objects.
+  * Textures.
+  * Camera.
+  * Others.
+* Scenes.
+* An actual editor.
+* Multiplayer support.
+* Autogeneration of ImGui headers using [cimgui](https://github.com/cimgui/cimgui)?
