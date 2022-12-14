@@ -2,7 +2,7 @@
 
 A miminal game engine using OpenGL 3.0 and ImGUI.
 
-![Example Screenshot](images/2022-12-13.png.png)
+![Example Screenshot](images/2022-12-13.png)
 
 The project includes the following dependencies:
 
