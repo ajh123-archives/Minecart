@@ -1,6 +1,7 @@
 ## Minecart
 
 A miminal game engine using OpenGL 3.0 and ImGUI.
+This is based of [https://github.com/Postrediori/MinimalImGui](https://github.com/Postrediori/MinimalImGui).
 
 ![Example Screenshot](images/2022-12-13.png)
 
@@ -48,12 +49,21 @@ sudo dnf install -y \
     freetype-devel
 ```
 
+### MSYS2 (Windows) and maybe other systems which uses Pacman
+
+* x86_64 based systems
+```
+pacman -S base-devel mingw-w64-x86_64-{cmake,gcc,freeglut,glew,libpng,mesa}
+```
+* other systems
+Replace `mingw-w64-x86_64` with the architecture for your system (e.g. `mingw-w64-clang-i686`)
+
 ## Building
 
 Check out sources with `--recursive` parameter for 3rd-party libraries:
 
 ```
-git clone --recursive https://github.com/Postrediori/MinimalImGui.git
+git clone --recursive https://github.com/ajh123-development/Minecart.git
 ```
 
 Prepare build with CMake and build executables
@@ -62,8 +72,8 @@ Prepare build with CMake and build executables
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make
-make install
 ```
+In somecases, `make` has to be replaced with `ninja`.
 
 ## Running
 
